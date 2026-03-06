@@ -1,0 +1,99 @@
+# Bellabeat ETL Example — Preparing Wearable Data with Data Loom HQ
+
+## Overview
+
+This example demonstrates how **Data Loom HQ** was used to clean, validate, and prepare the Bellabeat wearable dataset prior to analysis. The Bellabeat project required merging three separate CSV files (activity, sleep, and weight logs), each with inconsistent formatting, duplicate entries, and mixed date structures.
+
+> “To ensure the analysis was reliable, the following cleaning operations were performed using R: Deduplication… Standardization… Type Conversion…”
+
+Data Loom HQ automated the majority of these steps, ensuring the final master dataset was clean, consistent, and ready for downstream analysis in R.
+
+---
+
+## ETL Objectives
+
+- Remove duplicate entries across all three datasets  
+- Standardize column names to lowercase_underscore format  
+- Normalize date fields into a consistent MM-DD-YYYY structure  
+- Convert numeric fields (weight, BMI) to proper numeric types  
+- Clean boolean fields and text inconsistencies  
+- Produce a reproducible changelog documenting all transformations  
+
+---
+
+## Input Files
+
+The following raw CSVs were processed:
+
+- `dailyActivity_merged.csv`  
+- `sleepDay_merged.csv`  
+- `weightLogInfo_merged.csv`  
+
+Each file contained structural inconsistencies that required automated cleaning before merging.
+
+---
+
+## How Data Loom HQ Processed the Files
+
+### 1. **Sanitization Phase**
+
+Data Loom HQ automatically:
+
+- Removed 142 duplicate rows across the three datasets  
+- Standardized all column names  
+- Trimmed whitespace and normalized text fields  
+- Converted weight, BMI, and related fields to numeric types  
+- Reformatted all date fields into a unified structure  
+- Cleaned timestamp inconsistencies in sleep and weight logs  
+
+These steps ensured that the datasets could be merged without schema conflicts.
+
+---
+
+### 2. **Transformation Phase**
+
+Data Loom HQ prepared the datasets for R by:
+
+- Aligning primary keys (`id`) across all files  
+- Ensuring consistent date formats for join operations  
+- Validating that all numeric fields were properly typed  
+- Generating a structured changelog documenting each transformation  
+
+This allowed the R script to perform clean, conflict‑free joins.
+
+---
+
+### 3. **Load Phase**
+
+The cleaned datasets were exported as:
+
+- `activity_clean.csv`  
+- `sleep_clean.csv`  
+- `weight_clean.csv`  
+
+These files were then merged in R to create the final master dataset:
+
+- `Bellabeat_Final_Master.csv`
+
+---
+
+## Example Workflow (Conceptual)
+
+```python
+from loom import DataLoom
+
+loom = DataLoom()
+
+activity = loom.load("dailyActivity_merged.csv")
+sleep = loom.load("sleepDay_merged.csv")
+weight = loom.load("weightLogInfo_merged.csv")
+
+activity_clean = loom.clean(activity)
+sleep_clean = loom.clean(sleep)
+weight_clean = loom.clean(weight)
+
+loom.export(activity_clean, "activity_clean.csv")
+loom.export(sleep_clean, "sleep_clean.csv")
+loom.export(weight_clean, "weight_clean.csv")
+
+loom.generate_changelog("bellabeat_changelog.md")
