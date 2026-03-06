@@ -1,0 +1,32 @@
+# Data Loom HQ Architecture
+
+## Pipeline Stages
+
+1. **Extract**
+   - Load CSV or structured data
+   - Validate encoding and schema
+
+2. **Transform**
+   - Deduplicate
+   - Standardize column names
+   - Normalize numeric fields
+   - Clean text fields
+   - Format dates
+   - Generate SQL syntax (Syntax Track module)
+
+3. **Load**
+   - Export cleaned dataset
+   - Generate SQL-ready tables
+   - Produce audit logs
+
+## Modules
+
+### Sanitization Engine
+Handles structural and formatting corrections.
+
+### Syntax Track
+Converts transformation logic into SQL.
+
+### Audit Logger
+Creates reproducible changelogs.
+
