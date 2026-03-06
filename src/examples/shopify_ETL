@@ -1,0 +1,12 @@
+# Shopify ETL Example
+
+Data Loom HQ was used to sanitize the Shopify 2025 dataset before SQL benchmarking.
+
+> “Utilized my custom ETL application, Data Loom HQ, to sanitize and organize the raw Kaggle data before conducting the final analysis.”
+
+Key steps:
+- Removed duplicates  
+- Standardized price ranges  
+- Normalized numeric fields  
+- Cleaned text fields  
+- Prepared dataset for BigQuery ingestion  
